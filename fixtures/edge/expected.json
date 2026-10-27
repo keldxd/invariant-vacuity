@@ -1,0 +1,38 @@
+{
+  "_comment": "Edge cases: reverting setUp, invariant failing at start, capture running out of gas, excludeSender forwarding. E_HeavyCompute exceeds the opcode-trace gas cap: live stays live, frozen is downgraded to untracked. E_Nondeterministic stores vm.unixTime() in setUp, so the probe must refuse to compare.",
+  "test/Edge.t.sol:E_SetupReverts": {
+    "verdicts": {
+      "invariant_x()": "inconclusive"
+    },
+    "findings": [
+      "setup-failed"
+    ]
+  },
+  "test/Edge.t.sol:E_FailsAtStart": {
+    "verdicts": {
+      "invariant_broken()": "failing"
+    }
+  },
+  "test/Edge.t.sol:E_HeavyCapture": {
+    "verdicts": {
+      "invariant_heavy()": "inconclusive",
+      "invariant_light()": "live"
+    }
+  },
+  "test/Edge.t.sol:E_ExcludeSender": {
+    "verdicts": {
+      "invariant_gated()": "live"
+    }
+  },
+  "test/Edge.t.sol:E_HeavyCompute": {
+    "verdicts": {
+      "invariant_computeLive()": "live",
+      "invariant_computeFrozen()": "frozen-untracked"
+    }
+  },
+  "test/Edge.t.sol:E_Nondeterministic": {
+    "verdicts": {
+      "invariant_stamp()": "inconclusive"
+    }
+  }
+}

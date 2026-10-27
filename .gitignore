@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.venv/
+fixtures/*/out/
+fixtures/*/cache/
+fixtures/layout/build/
+fixtures/layout/tmp-cache/
+**/__vacuity__/

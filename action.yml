@@ -1,0 +1,26 @@
+name: invariant-vacuity
+description: Find Foundry invariant tests that pass for the wrong reason.
+branding:
+  icon: alert-triangle
+  color: orange
+inputs:
+  working-directory:
+    description: Foundry project root.
+    default: "."
+  args:
+    description: Extra arguments for vacuity, for example "--strict --match-path 'test/invariant/*'".
+    default: ""
+  json-out:
+    description: Where to write the JSON report.
+    default: vacuity-report.json
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+    - shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        PYTHONPATH: ${{ github.action_path }}
+      run: python -m vacuity --json-out "${{ inputs.json-out }}" ${{ inputs.args }}

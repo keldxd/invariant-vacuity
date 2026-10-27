@@ -1,0 +1,14 @@
+[profile.default]
+src = "contracts"
+test = "tests"
+out = "build"
+cache_path = "tmp-cache"
+libs = []
+solc_version = "0.8.28"
+offline = true
+remappings = ["@proto/=contracts/"]
+no_match_path = "tests/skip/*"
+
+[profile.default.invariant]
+runs = 16
+depth = 25

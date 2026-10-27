@@ -1,0 +1,232 @@
+{
+  "_comment": "Expected verdicts, written from each fixture's design before running the tool. 'findings' lists codes that must be present. Contracts not marked frozen must produce zero error findings. V02, V05 and V09 were first expected as errors and changed to frozen-guarded for soundness: writes are matched by contract type and variable name, so the analysis cannot prove that the reachable writes (zero-value deposits, writes to another vault instance, writes to the implementation instead of the proxy) can never hit these slots.",
+  "test/vacuous/V01_AlwaysReverts.t.sol:V01_AlwaysReverts": {
+    "verdicts": {
+      "invariant_sharesMatchGhost()": "frozen"
+    },
+    "findings": [
+      "dead-selector",
+      "all-calls-reverted"
+    ]
+  },
+  "test/vacuous/V02_BoundToZero.t.sol:V02_BoundToZero": {
+    "verdicts": {
+      "invariant_sharesMatchGhost()": "frozen-guarded"
+    },
+    "guarded_contain": {
+      "invariant_sharesMatchGhost()": [
+        "Vault.deposit writes totalShares"
+      ]
+    }
+  },
+  "test/vacuous/V03_GhostNeverUpdated.t.sol:V03_GhostNeverUpdated": {
+    "verdicts": {
+      "invariant_withdrawnLeDeposited()": "frozen"
+    }
+  },
+  "test/vacuous/V04_UntouchedSlot.t.sol:V04_UntouchedSlot": {
+    "verdicts": {
+      "invariant_neverPaused()": "frozen",
+      "invariant_solvent()": "live"
+    },
+    "inputs_contain": {
+      "invariant_neverPaused()": [
+        "Vault",
+        "paused"
+      ]
+    }
+  },
+  "test/vacuous/V05_WrongTarget.t.sol:V05_WrongTarget": {
+    "verdicts": {
+      "invariant_vaultBSolvent()": "frozen-guarded"
+    },
+    "guarded_contain": {
+      "invariant_vaultBSolvent()": [
+        "Vault.deposit writes totalShares"
+      ]
+    }
+  },
+  "test/vacuous/V06_ExcludedSelector.t.sol:V06_ExcludedSelector": {
+    "verdicts": {
+      "invariant_solvent()": "frozen"
+    }
+  },
+  "test/vacuous/V07_Trivial.t.sol:V07_Trivial": {
+    "verdicts": {
+      "invariant_deployed()": "frozen",
+      "invariant_arithmetic()": "frozen"
+    }
+  },
+  "test/vacuous/V08_HashGated.t.sol:V08_HashGated": {
+    "verdicts": {
+      "invariant_countBounded()": "frozen-guarded"
+    },
+    "guarded_contain": {
+      "invariant_countBounded()": [
+        "Counter.inc writes count (conditionally)"
+      ]
+    }
+  },
+  "test/vacuous/V09_ProxyBypass.t.sol:V09_ProxyBypass": {
+    "verdicts": {
+      "invariant_proxyCountBounded()": "frozen-guarded"
+    },
+    "guarded_contain": {
+      "invariant_proxyCountBounded()": [
+        "CounterImpl.inc writes count"
+      ]
+    }
+  },
+  "test/vacuous/V10_WrongSender.t.sol:V10_WrongSender": {
+    "verdicts": {
+      "invariant_countBounded()": "frozen"
+    },
+    "findings": [
+      "dead-selector"
+    ]
+  },
+  "test/vacuous/V11_TimeNoWarp.t.sol:V11_TimeNoWarp": {
+    "verdicts": {
+      "invariant_vestedLeTotal()": "frozen"
+    },
+    "inputs_contain": {
+      "invariant_vestedLeTotal()": [
+        "block.timestamp"
+      ]
+    }
+  },
+  "test/vacuous/V12_NamedSlots.t.sol:V12_NamedSlots": {
+    "verdicts": {
+      "invariant_flagNeverSet()": "frozen",
+      "invariant_collectedBounded()": "live"
+    },
+    "inputs_contain": {
+      "invariant_flagNeverSet()": [
+        "FeeVault",
+        "frozenFlag"
+      ]
+    }
+  },
+  "test/healthy/H01_Vault.t.sol:H01_Vault": {
+    "verdicts": {
+      "invariant_solvent()": "live",
+      "invariant_ghostAccounting()": "live"
+    }
+  },
+  "test/healthy/H02_VmLoad.t.sol:H02_VmLoad": {
+    "verdicts": {
+      "invariant_countViaVmLoad()": "live"
+    }
+  },
+  "test/healthy/H03_TimeWarp.t.sol:H03_TimeWarp": {
+    "verdicts": {
+      "invariant_vestedLeTotal()": "live"
+    }
+  },
+  "test/healthy/H04_SelfBalance.t.sol:H04_SelfBalance": {
+    "verdicts": {
+      "invariant_assetsBounded()": "live"
+    }
+  },
+  "test/healthy/H05_BalanceOpcode.t.sol:H05_BalanceOpcode": {
+    "verdicts": {
+      "invariant_balanceBounded()": "live"
+    }
+  },
+  "test/healthy/H06_RareChange.t.sol:H06_RareChange": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H07_ProxyCorrect.t.sol:H07_ProxyCorrect": {
+    "verdicts": {
+      "invariant_proxyCountBounded()": "live"
+    }
+  },
+  "test/healthy/H08_DefaultTargeting.t.sol:H08_DefaultTargeting": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H09_NoSetUp.t.sol:H09_NoSetUp": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H10_SetupNeedsEth.t.sol:H10_SetupNeedsEth": {
+    "verdicts": {
+      "invariant_depositsBacked()": "live"
+    }
+  },
+  "test/healthy/H11_LeakedPrank.t.sol:H11_LeakedPrank": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H12_TargetSender.t.sol:H12_TargetSender": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H13_HelperVmLoad.t.sol:H13_HelperVmLoad": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H14_NonViewInvariant.t.sol:H14_NonViewInvariant": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/healthy/H15_StatefulFuzzPrefix.t.sol:H15_StatefulFuzzPrefix": {
+    "verdicts": {
+      "statefulFuzz_countBounded()": "live"
+    }
+  },
+  "test/healthy/H16_LargeReadSet.t.sol:H16_LargeReadSet": {
+    "verdicts": {
+      "invariant_sumMatchesSupply()": "live"
+    }
+  },
+  "test/healthy/H17_Inherited.t.sol:H17_Inherited": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/warn/W01_UntrackedCheat.t.sol:W01_UntrackedCheat": {
+    "verdicts": {
+      "invariant_nonceBounded()": "frozen-untracked"
+    }
+  },
+  "test/warn/W02_Basefee.t.sol:W02_Basefee": {
+    "verdicts": {
+      "invariant_feeBounded()": "frozen-untracked"
+    }
+  },
+  "test/warn/W03_DeadAdmin.t.sol:W03_DeadAdmin": {
+    "verdicts": {
+      "invariant_solvent()": "live"
+    },
+    "findings": [
+      "dead-selector"
+    ]
+  },
+  "test/warn/W04_HighDiscard.t.sol:W04_HighDiscard": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    },
+    "findings": [
+      "high-discard"
+    ]
+  },
+  "test/dup_a/Dup.t.sol:D_Dup": {
+    "verdicts": {
+      "invariant_countBounded()": "live"
+    }
+  },
+  "test/dup_b/Dup.t.sol:D_Dup": {
+    "verdicts": {
+      "invariant_countBounded()": "frozen"
+    }
+  }
+}

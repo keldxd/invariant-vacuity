@@ -1,0 +1,3 @@
+[submodule "fixtures/seeded/lib/forge-std"]
+	path = fixtures/seeded/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

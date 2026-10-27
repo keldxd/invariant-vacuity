@@ -1,0 +1,16 @@
+{
+  "_comment": "Same expectations under every profile in foundry.toml (solc 0.8.0 to 0.8.28, legacy, via_ir, optimizer, deny_warnings).",
+  "test/Compat.t.sol:CompatLive": {
+    "verdicts": {
+      "invariant_live()": "live"
+    }
+  },
+  "test/Compat.t.sol:CompatFrozen": {
+    "verdicts": {
+      "invariant_frozen()": "frozen"
+    },
+    "probe_calls_default": {
+      "invariant_frozen()": 225
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "_comment": "Custom layout. tests/skip/* is excluded by the profile's no_match_path and must not be reported.",
+  "tests/my invariants/Weird Name.t.sol:WeirdLayout": {
+    "verdicts": {"invariant_live()": "live", "invariant_frozen()": "frozen"}
+  }
+}

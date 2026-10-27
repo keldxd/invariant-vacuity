@@ -1,0 +1,10 @@
+[profile.default]
+src = "src"
+test = "test"
+libs = []
+solc_version = "0.8.28"
+offline = true
+
+[profile.default.invariant]
+runs = 16
+depth = 25

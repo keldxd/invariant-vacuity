@@ -1,0 +1,6 @@
+{
+  "_comment": "fail_on_revert = true. FR_Reverting's handler reverts on odd inputs, so the user's own run fails.",
+  "test/FailOnRevert.t.sol:FR_Live": {"verdicts": {"invariant_live()": "live"}},
+  "test/FailOnRevert.t.sol:FR_Frozen": {"verdicts": {"invariant_frozen()": "frozen"}},
+  "test/FailOnRevert.t.sol:FR_Reverting": {"verdicts": {"invariant_count()": "failing"}}
+}

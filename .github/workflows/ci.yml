@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest tests.test_unit -v
+      - name: package installs and runs
+        run: |
+          python -m pip install .
+          cd "$RUNNER_TEMP" && vacuity --version
+          python -c "import os, vacuity.cheatcodes as c; assert os.path.exists(os.path.join(os.path.dirname(c.__file__), 'vm_signatures.txt'))"
+
+  probe-compiles:
+    # the generated probe must compile without warnings on every supported solc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: scripts/install_solc.sh
+      - run: tests/compile_probe.sh
+
+  fixtures:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # oldest supported, a few in between, newest tested
+        forge: [v1.1.0, v1.3.6, v1.5.1, v1.8.6]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          # oldest Forge with oldest Python, so both minimums are exercised end to end
+          python-version: ${{ matrix.forge == 'v1.1.0' && '3.9' || '3.13' }}
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ matrix.forge }}
+      - run: scripts/install_solc.sh
+      - name: fixture matrix (every fixture, every compat profile)
+        run: scripts/matrix.sh "$(command -v forge)"
+      - name: integration tests (cleanup, interrupts, CLI flags)
+        run: python -m unittest tests.test_integration -v
+      - name: fork tests against a local anvil
+        run: python -m unittest tests.test_fork -v
+      - name: scale test (30 test contracts x 3 invariants)
+        run: python tests/scale_test.py --contracts 30
+
+  forge-stable:
+    # early warning for new Forge releases; not required to pass
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - run: scripts/install_solc.sh
+      - run: scripts/matrix.sh "$(command -v forge)"
+
+  action:
+    # runs this repository's action the way a user would
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.5.1
+      - run: scripts/install_solc.sh
+      - uses: ./
+        with:
+          working-directory: fixtures/compat
+          # CompatFrozen is frozen on purpose; ignoring it must make the run pass
+          args: --ignore CompatFrozen
+      - name: report was written and has the expected verdicts
+        run: |
+          python3 - <<'PY'
+          import json
+          rep = json.load(open("fixtures/compat/vacuity-report.json"))
+          v = {i["name"]: i["verdict"] for c in rep["contracts"] for i in c["invariants"]}
+          assert v == {"invariant_live()": "live", "invariant_frozen()": "frozen"}, v
+          assert rep["summary"]["errors"] == 0, rep["summary"]
+          PY

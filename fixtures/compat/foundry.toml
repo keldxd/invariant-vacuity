@@ -1,0 +1,35 @@
+[profile.default]
+src = "src"
+test = "test"
+libs = []
+solc_version = "0.8.28"
+offline = true
+
+[profile.default.invariant]
+runs = 16
+depth = 25
+
+[profile.solc080]
+solc_version = "0.8.0"
+[profile.solc084]
+solc_version = "0.8.4"
+[profile.solc087]
+solc_version = "0.8.7"
+[profile.solc0813]
+solc_version = "0.8.13"
+[profile.solc0819]
+solc_version = "0.8.19"
+[profile.viair]
+solc_version = "0.8.24"
+via_ir = true
+optimizer = true
+optimizer_runs = 200
+[profile.optimized]
+optimizer = true
+optimizer_runs = 1000000
+[profile.denywarnings]
+deny = "warnings"
+
+[profile.dynlink]
+# Forge 1.8 default; older versions ignore the key. vacuity turns it off in its own build.
+dynamic_test_linking = true
