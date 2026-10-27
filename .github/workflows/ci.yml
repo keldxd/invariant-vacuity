@@ -12,8 +12,8 @@ jobs:
       matrix:
         python: ["3.9", "3.13"]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
       - run: python -m unittest tests.test_unit -v
@@ -27,8 +27,8 @@ jobs:
     # the generated probe must compile without warnings on every supported solc
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - run: scripts/install_solc.sh
@@ -42,10 +42,10 @@ jobs:
         # oldest supported, a few in between, newest tested
         forge: [v1.1.0, v1.3.6, v1.5.1, v1.8.6]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           # oldest Forge with oldest Python, so both minimums are exercised end to end
           python-version: ${{ matrix.forge == 'v1.1.0' && '3.9' || '3.13' }}
@@ -67,10 +67,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - uses: foundry-rs/foundry-toolchain@v1
@@ -83,7 +83,7 @@ jobs:
     # runs this repository's action the way a user would
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: foundry-rs/foundry-toolchain@v1
         with:
           version: v1.5.1
