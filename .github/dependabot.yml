@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Keeps the actions used by CI and by action.yml up to date, so deprecation
+  # warnings (like the Node 20 one) get a pull request instead of a surprise.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

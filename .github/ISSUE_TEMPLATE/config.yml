@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Missed vacuity or other security-relevant report
+    url: https://github.com/keldxd/invariant-vacuity/security/advisories/new
+    about: The tool said an invariant was fine when it was never exercised. Please report privately.

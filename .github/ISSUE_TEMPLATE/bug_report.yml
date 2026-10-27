@@ -1,0 +1,51 @@
+name: Bug report
+description: A crash, an error message, or something that does not work as the README says.
+labels: ["bug"]
+body:
+  - type: input
+    id: forge
+    attributes:
+      label: Forge version
+      description: Output of `forge --version` (first line)
+    validations:
+      required: true
+  - type: input
+    id: vacuity
+    attributes:
+      label: invariant-vacuity version
+      description: Output of `vacuity --version`
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Operating system and Python version
+      placeholder: "Ubuntu 24.04, Python 3.12"
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Full output
+      description: Everything the tool printed, including the error.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: A link to a public repo and commit if possible. If the generated probe failed to compile, rerun with `--keep-probe` and attach the files in `test/__vacuity__/`.

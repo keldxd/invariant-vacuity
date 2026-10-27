@@ -1,0 +1,63 @@
+name: Wrong verdict
+description: The tool flagged something that is fine, or missed something it should have flagged.
+labels: ["wrong-verdict"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. If the tool said an invariant was **fine (`ok`) when it was clearly never exercised**, please report it privately instead (Security tab, "Report a vulnerability"), since that can hide problems in someone's audit.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What went wrong
+      options:
+        - Flagged as frozen (error), but the invariant is exercised
+        - Warning that I think is wrong
+        - Reported inconclusive, but I expected a verdict
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: forge
+    attributes:
+      label: Forge version
+      description: Output of `forge --version` (first line)
+      placeholder: "forge Version: 1.5.1-stable"
+    validations:
+      required: true
+  - type: input
+    id: vacuity
+    attributes:
+      label: invariant-vacuity version
+      description: Output of `vacuity --version`
+      placeholder: "invariant-vacuity 0.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      render: shell
+      placeholder: vacuity --match-contract VaultInvariants
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why you think the verdict is wrong
+      description: For example, which handler function changes the variable the invariant reads, and how you know it ran.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: A link to a public repo and commit, or the smallest test contract and handler that show it.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: The report for the affected contract. `--format json` output is most useful.
+      render: text
